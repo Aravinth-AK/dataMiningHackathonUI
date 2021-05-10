@@ -1,5 +1,7 @@
 @import url("//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css");
-
+@import '~@angular/material/prebuilt-themes/indigo-pink.css';
 html,body{
     height: 100vh !important;
 }
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
