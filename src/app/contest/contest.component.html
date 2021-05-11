@@ -2,16 +2,16 @@
     <mat-toolbar color="primary">
       <span>Hackathon Name</span>
       <span class="example-spacer"></span>
-
       <button mat-icon-button class="example-icon" aria-label="Example icon-button with share icon">
+      <mat-icon [matBadge]="count" matBadgeColor="warn" title="submissions">poll</mat-icon>
+      </button>
+      <button mat-icon-button class="example-icon" aria-label="Example icon-button with share icon" [routerLink]="['/login']">
         <mat-icon>logout</mat-icon>
       </button>
     </mat-toolbar>
+    <mat-progress-bar *ngIf="isLoading" mode="indeterminate" color="accent"></mat-progress-bar>
   </p>
-  <!-- <div id="box">
-    <h1>Total Submissions</h1>
-    <span class="total"></span>
-  </div> -->
+  <ngb-alert  *ngIf="showAlert" [type]="alertType" animation="true" dismissible="true">{{message}}</ngb-alert>
 
   <div class="container-custom">
     <div class="card">
@@ -20,38 +20,74 @@
             <div class="row justify-content-between text-left">
                 <div class="form-group col-sm-6 flex-column d-flex">
                      <label class="form-control-label px-3">Main Disease/Disorder<span class="text-danger"> *</span></label> 
-                     <input type="text" id="fname" name="fname" placeholder="" formControlName="diseaseName"> 
-                     <div *ngIf="isSubmitted && f.diseaseName.errors" class="invalid-feedback">
-                        <div *ngIf="f.diseaseName.errors.required">Main Disease/Disorder is required</div>
+                     <input type="text" id="fname" name="fname" placeholder="" formControlName="diseaseName" [class]="isSubmitted && f.diseaseName.errors?'invalid-box':''"> 
+                     <div *ngIf="isSubmitted && f.diseaseName.errors" class="invalid">
+                        <div *ngIf="f.diseaseName.errors.required">* Main Disease/Disorder is required</div>
                     </div>
                     </div>
-                <div class="form-group col-sm-6 flex-column d-flex"> <label class="form-control-label px-3">Subtypes<span class="text-danger"> *</span></label> <input type="text" id="lname" name="lname" placeholder="" formControlName="alternateDiseaseName"> </div>
+                <div class="form-group col-sm-6 flex-column d-flex"> 
+                    <label class="form-control-label px-3">Subtypes<span class="text-danger"> *</span></label> 
+                    <input type="text" id="lname" name="lname" placeholder="" formControlName="alternateDiseaseName" [class]="isSubmitted && f.diseaseName.errors?'invalid-box':''"> 
+                    <div *ngIf="isSubmitted && f.alternateDiseaseName.errors" class="invalid">
+                        <div *ngIf="f.alternateDiseaseName.errors.required">* Subtypes is required</div>
+                    </div>
+                </div>
              
             </div>
             <div class="row justify-content-between text-left">
-                <div class="form-group col-sm-6 flex-column d-flex"> <label class="form-control-label px-3">Causative gene<span class="text-danger"> *</span></label> <input type="text" id="email" name="email" placeholder="" formControlName="gene"> </div>
-                <div class="form-group col-sm-6 flex-column d-flex"> <label class="form-control-label px-3">Inheritance<span class="text-danger"> *</span></label> <input type="text" id="mob" name="mob" placeholder="" formControlName="inheritance"> </div>
+                <div class="form-group col-sm-6 flex-column d-flex"> 
+                    <label class="form-control-label px-3">Causative gene<span class="text-danger"> *</span></label> 
+                    <input type="text" id="email" name="email" placeholder="" formControlName="gene" [class]="isSubmitted && f.diseaseName.errors?'invalid-box':''"> 
+                    <div *ngIf="isSubmitted && f.gene.errors" class="invalid">
+                        <div *ngIf="f.gene.errors.required">* Causative gene is required</div>
+                    </div>
+                </div>
+                <div class="form-group col-sm-6 flex-column d-flex"> <label class="form-control-label px-3">Inheritance<span class="text-danger"> *</span></label> 
+                    <input type="text" id="mob" name="mob" placeholder="" formControlName="inheritance" [class]="isSubmitted && f.diseaseName.errors?'invalid-box':''"> 
+                    <div *ngIf="isSubmitted && f.inheritance.errors" class="invalid">
+                        <div *ngIf="f.inheritance.errors.required">* Inheritance is required</div>
+                    </div>
+                </div>
             </div>
             <div class="row justify-content-between text-left">
-                <div class="form-group col-sm-6 flex-column d-flex"> <label class="form-control-label px-3">Phenotype MIM number<span class="text-danger"> *</span></label> <input type="number" id="job" name="job" placeholder="" formControlName="phenoTypeId"> </div>
+                <div class="form-group col-sm-6 flex-column d-flex"> <label class="form-control-label px-3">Phenotype MIM number<span class="text-danger"> *</span></label> 
+                    <input type="number" id="job" name="job" placeholder="" formControlName="phenoTypeId"> </div>
+                    <div *ngIf="isSubmitted && f.phenoTypeId.errors" class="invalid">
+                        <div *ngIf="f.phenoTypeId.errors.required">* Phenotype MIM number is required</div>
+                    </div>
             </div>
             <div class="row justify-content-between text-left">
-                <div class="form-group col-12 flex-column d-flex"> <label class="form-control-label px-3">Symptoms<span class="text-danger"> *</span></label> <textarea type="text" id="ans" name="ans" placeholder="" formControlName="symptoms" rows=7></textarea> </div>
+                <div class="form-group col-12 flex-column d-flex"> <label class="form-control-label px-3">Symptoms<span class="text-danger"> *</span></label> 
+                    <textarea type="text" id="ans" name="ans" placeholder="" formControlName="symptoms" rows=7 [class]="isSubmitted && f.diseaseName.errors?'invalid-box':''"></textarea> 
+                    <div *ngIf="isSubmitted && f.symptoms.errors" class="invalid">
+                        <div *ngIf="f.symptoms.errors.required">* Symptoms is required</div>
+                    </div>
+                </div>
             </div>
             <div class="row justify-content-between text-left">
-                <div class="form-group col-12 flex-column d-flex"> <label class="form-control-label px-3">Related/Associated disorders<span class="text-danger"> *</span></label> <input type="text" id="ans" name="ans" placeholder="" formControlName="disorder"> </div>
+                <div class="form-group col-12 flex-column d-flex"> <label class="form-control-label px-3">Related/Associated disorders<span class="text-danger"> *</span>
+                </label> <input type="text" id="ans" name="ans" placeholder="" formControlName="disorder"> 
+                <div *ngIf="isSubmitted && f.disorder.errors" class="invalid">
+                    <div *ngIf="f.disorder.errors.required">* Related/Associated disorders is required</div>
+                </div>
+            </div>
             </div>
             <div class="row justify-content-between text-left">
-                <div class="form-group col-12 flex-column d-flex"> <label class="form-control-label px-3">Differentail disorders<span class="text-danger"> *</span></label> <input type="text" id="ans" name="ans" placeholder="" formControlName="Diagnosis"> </div>
+                <div class="form-group col-12 flex-column d-flex"> <label class="form-control-label px-3">Differentail disorders<span class="text-danger"> *</span></label> 
+                    <input type="text" id="ans" name="ans" placeholder="" formControlName="Diagnosis" [class]="isSubmitted && f.diseaseName.errors?'invalid-box':''"> 
+                    <div *ngIf="isSubmitted && f.Diagnosis.errors" class="invalid">
+                        <div *ngIf="f.Diagnosis.errors.required">* Differentail disorders is required</div>
+                    </div>
+                </div>
             </div>
             <div class="row justify-content-end">
-                <div class="form-group col-sm-6">    <button mat-flat-button color="primary" class="btn-block"  (click)="onSubmit()">Submit Data</button> </div>
+                <div class="form-group col-sm-6 col-md-4">    <button mat-flat-button color="primary" class="btn-block"  (click)="onSubmit()">Submit Data</button> </div>
             </div>
         </form>
     </div>
 
   </div>
-<div class="contest">
+<!-- <div class="contest">
     <div class="container-fluid mx-auto">
         <div class="row d-flex justify-content-center">
             <div class="col-xl-7 col-lg-8 col-md-9 col-11 text-center">
@@ -62,4 +98,4 @@
             </div>
         </div>
     </div>
-</div>
+</div> -->

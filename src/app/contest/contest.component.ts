@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { BaseServiceService } from '../services/base-service.service';
-import * as $ from 'jquery';
+import jwt_decode from 'jwt-decode';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-contest',
@@ -11,7 +12,13 @@ import * as $ from 'jquery';
 export class ContestComponent implements OnInit {
   public thesisPayload:FormGroup;
   public isSubmitted:boolean=false;
-  constructor(private fb:FormBuilder,private baseService:BaseServiceService) { }
+  public isLoading:boolean=false; 
+  public showAlert:boolean=false;
+  public alertType:string="success";
+  public message:string;
+  public count:number=0;
+  
+  constructor(private fb:FormBuilder,private baseService:BaseServiceService,private _snackBar: MatSnackBar) { }
 
   ngOnInit(): void {
     this.thesisPayload=this.fb.group({
@@ -24,40 +31,55 @@ export class ContestComponent implements OnInit {
       disorder:['',Validators.required],
       Diagnosis:['',Validators.required],
     });
-    this.initalizeCounter();
+
   }
 
   public onSubmit(){
     this.isSubmitted=true;
     if(this.thesisPayload.valid)
     {
-      this.baseService.saveThesisData(this.thesisPayload.value).subscribe(res=>{
-        console.log(res);
-      });
+      this.isLoading=true;
+      let token:any =jwt_decode(localStorage.getItem('token'));
+      let payload={
+        ...this.thesisPayload.value,
+        userId:token.data._id
+      }
+      this.baseService.saveThesisData(payload)
+      .subscribe(
+        (response:any) => {                           //Next callback
+          this.isSubmitted=false;
+          this.isLoading=false;
+          this.alertType="success"
+          this.showAlert=true;
+          setTimeout(() => {
+            this.showAlert=false;
+          }, 4000);
+          window.scroll(0,0);
+          this.message=response.Message;  
+          this.count=response.count;         
+        },
+        (error) => {                              //Error callback
+          this.message=error.error.errors[0].Message;
+          this.isLoading=false;
+          
+          this.alertType="danger"
+          this.showAlert=true;
+          setTimeout(() => {
+            this.showAlert=false;
+          }, 4000);
+          window.scroll(0,0); 
+        }
+      )
     }
   }
 
-  public initalizeCounter(){
-    //Animate my counter from 0 to set number (6)
-$({counter: 0}).animate({counter: 3}, {
-  //Animate over a period of 2seconds
-  duration: 3000,
-  //Progress animation at constant pace using linear
-  easing:'linear',
-  step: function() {    
-    //Every step of the animation, update the number value
-    //Use ceil to round up to the nearest whole int
-    $('.total').text(Math.ceil(this.counter))
-  },
-  complete: function() {
-    //Could add in some extra animations, like a bounc of colour change once the count up is complete.
-  }
-});
-  }
+
 
 
   get f(){
     return this.thesisPayload.controls;
   }
+
+
 
 }

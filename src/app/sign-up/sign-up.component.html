@@ -1,6 +1,6 @@
 <div class="data-page">
     <div class="signup-form">
-        <form >
+        <form [formGroup]="canditateForm">
             <h2>Sign Up</h2>
             <p>Please fill in this form to create an account!</p>
             <hr>
@@ -11,7 +11,7 @@
                             <span class="fa fa-user"></span>
                         </span>                    
                     </div>
-                    <input type="text" class="form-control" name="username" placeholder="Username" required="required">
+                    <input type="text" class="form-control" name="username" placeholder="Username"  formControlName="userName">
                 </div>
             </div>
             <div class="form-group">
@@ -21,7 +21,7 @@
                             <span class="fa fa-graduation-cap"></span>
                         </span>                    
                     </div>
-                    <input type="text" class="form-control" name="username" placeholder="University" required="required">
+                    <input type="text" class="form-control" name="username" placeholder="University"  formControlName="university">
                 </div>
             </div>
             <div class="form-group">
@@ -31,7 +31,7 @@
                             <i class="fa fa-paper-plane"></i>
                         </span>                    
                     </div>
-                    <input type="email" class="form-control" name="email" placeholder="Email Address" required="required">
+                    <input type="email" class="form-control" name="email" placeholder="Email Address" formControlName="email">
                 </div>
             </div>
             <div class="form-group">
@@ -41,7 +41,7 @@
                             <i class="fa fa-lock"></i>
                         </span>                    
                     </div>
-                    <input type="text" class="form-control" name="password" placeholder="Password" required="required">
+                    <input type="number" class="form-control" name="phonenumber" placeholder="phonenumber" formControlName="phoneNumber">
                 </div>
             </div>
             <div class="form-group">
@@ -52,7 +52,7 @@
                             <i class="fa fa-check"></i>
                         </span>                    
                     </div>
-                    <input type="text" class="form-control" name="confirm_password" placeholder="Confirm Password" required="required">
+                    <input type="text" class="form-control" name="confirm_password" placeholder="Password" formControlName="password">
                 </div>
             </div>
             <div class="form-group">

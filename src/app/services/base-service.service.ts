@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -10,8 +11,12 @@ export class BaseServiceService {
     this.baseUrl="http://localhost:2020/api/hackathon/"
   };
 
-  saveThesisData(payload){
+  public saveThesisData(payload){
      return this.http.post(this.baseUrl+'addThesis',payload);
   };
+
+ public loginUser(payload): Observable<any>{
+    return this.http.post(this.baseUrl+'login',payload);
+ }
 
 }

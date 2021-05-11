@@ -1,6 +1,24 @@
 .example-spacer {
     flex: 1 1 auto;
   }
+
+  .invalid {
+    width: 100%;
+    margin-top: .25rem;
+    font-size: 80%;
+    color: #dc3545;
+}
+
+
+
+.invalid-box{
+    border: 1px solid #dc3545;
+}
+
+.invalid-box{
+    border: 1px solid #dc3545;
+}
+
 .card {
     padding: 30px 40px;
     margin-top: 60px;
@@ -80,3 +98,4 @@ button:focus {
     text-align:center;
     display:block;
   }
+

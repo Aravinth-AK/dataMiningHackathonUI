@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
+import { BaseServiceService } from '../services/base-service.service';
 
 @Component({
   selector: 'app-login',
@@ -9,17 +11,31 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 export class LoginComponent implements OnInit {
  public loginForm:FormGroup;
  public isSubmitted:boolean=false;
-  constructor(private _fb:FormBuilder) { }
+ public message:any;
+  constructor(private _fb:FormBuilder,private baseService:BaseServiceService,private router:Router) { }
 
   ngOnInit() {
    this.loginForm= this._fb.group({
-     username:['',Validators.required],
+    email:['',Validators.required],
      password:['',Validators.required]
    });
   } 
   
   onSubmit(){
     this.isSubmitted=true;
+    if(this.loginForm.valid)
+    {
+      this.baseService.loginUser(this.loginForm.value)
+      .subscribe(
+        (response) => {                           //Next callback
+            localStorage.setItem('token',response.token);
+            this.router.navigate(['/contest']);         
+        },
+        (error) => {                              //Error callback
+          this.message=error.error.errors[0].Message;
+        }
+      )
+    }
   }
 
 }
