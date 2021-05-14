@@ -24,7 +24,7 @@ export class SignUpComponent implements OnInit {
     this.canditateForm=this.fb.group({
       userName:['',Validators.required],
       university:['',Validators.required],
-      email:['',Validators.required],
+      email:['',[Validators.required, Validators.email,Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$')]],
       password:['',Validators.required],
       phoneNumber:['',Validators.required],
     })
@@ -41,6 +41,7 @@ export class SignUpComponent implements OnInit {
           this.isLoading=false;
           this.message=response.Message;
           this._snackbar.open(this.message,"close",{duration:3000});       
+          this.canditateForm.reset();
         },
         (error) => {                              //Error callback
           if(error.error.errors[0].Message)

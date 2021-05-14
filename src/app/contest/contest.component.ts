@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { BaseServiceService } from '../services/base-service.service';
 import jwt_decode from 'jwt-decode';
@@ -19,8 +19,19 @@ export class ContestComponent implements OnInit {
   public message:string;
   public count:number=0;
   public token:any;
+  public inheritance:any=[
+    {name:'Autosomal Dominant',value:'Autosomal Dominant'},
+    {name:'Autosomal Recessive',value:'Autosomal Recessive'},
+    {name:'X-linked dominant',value:'X-linked dominant'},
+    {name:'X-linked recessive',value:'X-linked recessive'},
+    {name:'Y-linked',value:'Y-linked'},
+    {name:'Digenic',value:'Digenic'},
+    {name:'Multifactorial',value:'Multifactorial'},
+    {name:'Mitochondrial',value:'Mitochondrial'},
+    {name:'Other',value:'Other'}
+  ]
   
-  constructor(private fb:FormBuilder,private baseService:BaseServiceService,private router:Router) { }
+  constructor(private fb:FormBuilder,private baseService:BaseServiceService,private router:Router,private _snackbar:MatSnackBar) { }
 
   ngOnInit(): void {
     this.thesisPayload=this.fb.group({
@@ -67,7 +78,9 @@ export class ContestComponent implements OnInit {
           }, 4000);
           window.scroll(0,0);
           this.message=response.Message;  
-          this.count=response.count;         
+          this.count=response.count; 
+          this.thesisPayload.reset();
+          
         },
         (error) => {                              //Error callback
           this.message=error.error.errors[0].Message;
@@ -81,6 +94,8 @@ export class ContestComponent implements OnInit {
           window.scroll(0,0); 
         }
       )
+    }else{
+      this._snackbar.open('Please fill all mandatory fields',"close",{duration:3000}); 
     }
   }
 

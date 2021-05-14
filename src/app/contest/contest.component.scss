@@ -102,3 +102,11 @@ button:focus {
   .image{
       max-height: 50px;
   }
+
+  :host ::ng-deep .mat-toolbar.mat-primary{
+    background: linear-gradient(to bottom, #4d4d4d, #c69320);
+  }
+
+  :host ::ng-deep .mat-form-field-appearance-fill .mat-form-field-flex{
+   background: white;
+  }
