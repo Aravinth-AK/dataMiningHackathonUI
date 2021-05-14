@@ -1,3 +1,4 @@
+<mat-progress-bar *ngIf="isLoading" mode="indeterminate" color="accent"></mat-progress-bar>
 <div class="data-page">
     <div class="signup-form">
         <form [formGroup]="canditateForm">
@@ -12,16 +13,22 @@
                         </span>                    
                     </div>
                     <input type="text" class="form-control" name="username" placeholder="Username"  formControlName="userName">
+                    <div *ngIf="isSubmitted && f.userName.errors" class="invalid">
+                        <div *ngIf="f.userName.errors.required">* username is required</div>
+                    </div>
                 </div>
             </div>
             <div class="form-group">
                 <div class="input-group">
                     <div class="input-group-prepend">
                         <span class="input-group-text">
-                            <span class="fa fa-graduation-cap"></span>
+                            <fa-icon [icon]="fauniversity"></fa-icon>
                         </span>                    
                     </div>
                     <input type="text" class="form-control" name="username" placeholder="University"  formControlName="university">
+                    <div *ngIf="isSubmitted && f.university.errors" class="invalid">
+                        <div *ngIf="f.university.errors.required">* university is required</div>
+                    </div>
                 </div>
             </div>
             <div class="form-group">
@@ -32,6 +39,9 @@
                         </span>                    
                     </div>
                     <input type="email" class="form-control" name="email" placeholder="Email Address" formControlName="email">
+                    <div *ngIf="isSubmitted && f.email.errors" class="invalid">
+                        <div *ngIf="f.email.errors.required">* Email is required</div>
+                    </div>
                 </div>
             </div>
             <div class="form-group">
@@ -41,7 +51,10 @@
                             <i class="fa fa-lock"></i>
                         </span>                    
                     </div>
-                    <input type="number" class="form-control" name="phonenumber" placeholder="phonenumber" formControlName="phoneNumber">
+                    <input type="number" class="form-control" name="phonenumber" placeholder="Contact number" formControlName="phoneNumber">
+                    <div *ngIf="isSubmitted && f.phoneNumber.errors" class="invalid">
+                        <div *ngIf="f.phoneNumber.errors.required">* Contact number</div>
+                    </div>
                 </div>
             </div>
             <div class="form-group">
@@ -53,13 +66,15 @@
                         </span>                    
                     </div>
                     <input type="text" class="form-control" name="confirm_password" placeholder="Password" formControlName="password">
+                    <div *ngIf="isSubmitted && f.password.errors" class="invalid">
+                        <div *ngIf="f.password.errors.required">* Password is required</div>
+                    </div>
                 </div>
             </div>
             <div class="form-group">
-                <label class="form-check-label"><input type="checkbox" required="required"> I accept the <a href="#">Terms of Use</a> &amp; <a href="#">Privacy Policy</a></label>
             </div>
             <div class="form-group">
-                <button type="submit" class="btn btn-primary btn-lg">Sign Up</button>
+                <button type="submit" class="btn btn-primary btn-lg" (click)="onSubmit()">Sign Up</button>
             </div>
         </form>
         <div class="text-center">Already have an account? <a [routerLink]="['/login']" >Login here</a></div>

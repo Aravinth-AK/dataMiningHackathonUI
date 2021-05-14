@@ -43,7 +43,7 @@ import { Router } from '@angular/router';
 
             if (error && error.status === 401) {
                 console.log("ERROR 401 UNAUTHORIZED");
-                this.snackBar.open('UNAUTHORIZED', 'Close',{duration:2000,panelClass: ['mat-toolbar', 'mat-primary']});
+                this.snackBar.open('UNAUTHORIZED', 'Close',{duration:2000});
                 this.router.navigate(['/login']) // in case of an error response the error message is displayed
                 return throwError(error.error.errors[0].message); 
             }

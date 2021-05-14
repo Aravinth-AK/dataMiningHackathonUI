@@ -1,11 +1,15 @@
 <p>
     <mat-toolbar color="primary">
-      <span>Hackathon Name</span>
-      <span class="example-spacer"></span>
+        
+        <span class="example-spacer">
+            <img src="/assets/White.png" alt="logo" class="image" >
+        </span>
+
+
       <button mat-icon-button class="example-icon" aria-label="Example icon-button with share icon">
       <mat-icon [matBadge]="count" matBadgeColor="warn" title="submissions">poll</mat-icon>
       </button>
-      <button mat-icon-button class="example-icon" aria-label="Example icon-button with share icon" [routerLink]="['/login']">
+      <button mat-icon-button class="example-icon" aria-label="Example icon-button with share icon" (click)="logout()">
         <mat-icon>logout</mat-icon>
       </button>
     </mat-toolbar>
@@ -15,7 +19,7 @@
 
   <div class="container-custom">
     <div class="card">
-        <h5 class="text-center mb-4">GeneBloc</h5>
+        <h5 class="text-center mb-4">Bio-Hackathon</h5>
         <form class="form-card" [formGroup]="thesisPayload">
             <div class="row justify-content-between text-left">
                 <div class="form-group col-sm-6 flex-column d-flex">

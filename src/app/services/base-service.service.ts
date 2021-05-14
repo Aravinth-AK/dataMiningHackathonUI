@@ -19,4 +19,13 @@ export class BaseServiceService {
     return this.http.post(this.baseUrl+'login',payload);
  }
 
+ public getTotalCount(payload){
+  return this.http.post(this.baseUrl+'totalCount',payload);
+};
+
+public postNewUser(payload){
+  return this.http.post(this.baseUrl+'signup',payload);
+};
+
+
 }

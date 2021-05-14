@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { BaseServiceService } from '../services/base-service.service';
 import jwt_decode from 'jwt-decode';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-contest',
@@ -17,8 +18,9 @@ export class ContestComponent implements OnInit {
   public alertType:string="success";
   public message:string;
   public count:number=0;
+  public token:any;
   
-  constructor(private fb:FormBuilder,private baseService:BaseServiceService,private _snackBar: MatSnackBar) { }
+  constructor(private fb:FormBuilder,private baseService:BaseServiceService,private router:Router) { }
 
   ngOnInit(): void {
     this.thesisPayload=this.fb.group({
@@ -32,6 +34,16 @@ export class ContestComponent implements OnInit {
       Diagnosis:['',Validators.required],
     });
 
+    this.token=jwt_decode(localStorage.getItem('token'));
+     
+    this.baseService.getTotalCount({userId:this.token.data._id})      .subscribe(
+      (response:any) => {                           //Next callback
+        this.count=response.count;         
+      },
+      (error) => {                              //Error callback
+        this.message=error.error.errors[0].Message;
+      }
+    )
   }
 
   public onSubmit(){
@@ -39,10 +51,9 @@ export class ContestComponent implements OnInit {
     if(this.thesisPayload.valid)
     {
       this.isLoading=true;
-      let token:any =jwt_decode(localStorage.getItem('token'));
       let payload={
         ...this.thesisPayload.value,
-        userId:token.data._id
+        userId:this.token.data._id
       }
       this.baseService.saveThesisData(payload)
       .subscribe(
@@ -78,6 +89,12 @@ export class ContestComponent implements OnInit {
 
   get f(){
     return this.thesisPayload.controls;
+  }
+
+  public logout(){
+    localStorage.removeItem("token");
+    this.router.navigate(['/login']);
+
   }
 
 
