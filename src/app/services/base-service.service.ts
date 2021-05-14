@@ -8,7 +8,7 @@ import { Observable } from 'rxjs';
 export class BaseServiceService {
   private baseUrl:string;
   constructor(private http:HttpClient) { 
-    this.baseUrl="http://localhost:2020/api/hackathon/"
+    this.baseUrl="http://65.21.109.108/api/hackathon/"
   };
 
   public saveThesisData(payload){
